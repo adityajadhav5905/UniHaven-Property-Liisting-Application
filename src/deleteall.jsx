@@ -1,20 +1,15 @@
 import React from 'react';
+import api from './api.js';
 
 const Deleteall = ({ onListingsCleared }) => {
   const handleDeleteAll = async () => {
     if (confirm("Are you sure you want to clear all user listings?")) {
       try {
-        const res = await fetch('http://localhost:5000/api/listings', {
-          method: 'DELETE',
-        });
-        if (res.status === 204) {
-          alert('All listings cleared!');
-          if (onListingsCleared) onListingsCleared();
-        } else {
-          alert('Failed to clear listings.');
-        }
+        await api.clearAllListings();
+        alert('All listings cleared!');
+        if (onListingsCleared) onListingsCleared();
       } catch (error) {
-        alert('Failed to clear listings. Please try again.');
+        alert(error.message || 'Failed to clear listings.');
       }
     }
   };
